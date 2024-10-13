@@ -1,0 +1,338 @@
+-- Check if the GUI already exists
+if game.Players.LocalPlayer.PlayerGui:FindFirstChild("menace123123") then
+    return -- Exit the script if the GUI already exists
+end
+
+-- Create the ScreenGui
+local menace123 = Instance.new("ScreenGui")
+menace123.Name = "menace123123" -- Give it a unique name
+menace123.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+menace123.ResetOnSpawn = false
+
+-- Create the draggable frame
+local draggableFrame = Instance.new("Frame")
+draggableFrame.Size = UDim2.new(0, 200, 0, 100) -- Small size (width 200px, height 100px)
+draggableFrame.Position = UDim2.new(0.5, 0, 0.5, 0) -- Center position
+draggableFrame.AnchorPoint = Vector2.new(0.5, 0.5) -- Set the anchor point to the center
+draggableFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+draggableFrame.BorderSizePixel = 0
+draggableFrame.Active = true
+draggableFrame.Draggable = true
+draggableFrame.Parent = menace123
+
+-- Add UICorner to the frame
+local frameCorner = Instance.new("UICorner")
+frameCorner.CornerRadius = UDim.new(0, 10)
+frameCorner.Parent = draggableFrame
+
+-- Create the Start button
+local startButton = Instance.new("TextButton")
+startButton.Size = UDim2.new(0, 100, 0, 50) -- Button size (width 100px, height 50px)
+startButton.Position = UDim2.new(0.5, 0, 0.5, 0) -- Center the button in the frame
+startButton.AnchorPoint = Vector2.new(0.5, 0.5) -- Set the anchor point to the center
+startButton.BackgroundColor3 = Color3.fromRGB(100, 200, 100)
+startButton.BorderSizePixel = 0
+startButton.Text = "Start"
+startButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+startButton.Font = Enum.Font.SourceSans
+startButton.TextSize = 24
+startButton.Parent = draggableFrame
+
+-- Add UICorner to the Start button
+local buttonCorner = Instance.new("UICorner")
+buttonCorner.CornerRadius = UDim.new(0, 10)
+buttonCorner.Parent = startButton
+
+-- Function to be executed when Start button is clicked
+local function onStartButtonClick()
+    print("Start button clicked!")
+    local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local Workspace = game:GetService("Workspace")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local function getRoot(char)
+    local rootPart = char:FindFirstChild('HumanoidRootPart') or char:FindFirstChild('Torso') or char:FindFirstChild('UpperTorso')
+    return rootPart
+end
+
+local spinSpeed = 140
+
+local stareDuration = 2 -- Stare duration in seconds
+
+local function stopSpin()
+    for _, v in pairs(getRoot(game.Players.LocalPlayer.Character):GetChildren()) do
+        if v.Name == "Spinning" then
+            v:Destroy()
+        end
+    end
+end
+
+local function getPlayerInFront()
+    local closestPlayer = nil
+    local closestAngle = math.huge
+
+    local charPos = Players.LocalPlayer.Character.HumanoidRootPart.Position
+    local forwardDirection = Players.LocalPlayer.Character.HumanoidRootPart.CFrame.LookVector
+
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= Players.LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local directionToPlayer = (player.Character.HumanoidRootPart.Position - charPos).unit
+
+            -- Calculate the angle between the player's forward direction and the direction to the other player
+            local angle = math.acos(forwardDirection:Dot(directionToPlayer))
+
+            -- Check if this player is within the detection radius
+            local distance = (player.Character.HumanoidRootPart.Position - charPos).magnitude
+            if angle < closestAngle and distance < 13 and player.Character.HumanoidRootPart.Position.Y - charPos.Y < 500 then
+                closestAngle = angle
+                closestPlayer = player
+            end
+        end
+    end
+
+    return closestPlayer
+end
+
+local function startStare(target)
+    local stareLoop
+
+    local function stareAtTarget()
+        if Players.LocalPlayer.Character.PrimaryPart and target.Character and target.Character:FindFirstChild("HumanoidRootPart") then
+            local chrPos = Players.LocalPlayer.Character.PrimaryPart.Position
+            local tPos = target.Character:FindFirstChild("HumanoidRootPart").Position
+            local modTPos = Vector3.new(tPos.X, chrPos.Y, tPos.Z)
+            local newCF = CFrame.new(chrPos, modTPos)
+            Players.LocalPlayer.Character:SetPrimaryPartCFrame(newCF)
+        elseif not target or not target.Character or not target.Character:FindFirstChild("HumanoidRootPart") then
+            stareLoop:Disconnect()
+        end
+    end
+
+    stareLoop = RunService.RenderStepped:Connect(stareAtTarget)
+    
+    -- Set gravity to 0 during stare
+    Workspace.Gravity = 0
+    
+    wait(stareDuration)
+    stareLoop:Disconnect()
+end
+
+-- Start spinning
+local Spin = Instance.new("BodyAngularVelocity")
+Spin.Name = "Spinning"
+Spin.Parent = getRoot(game.Players.LocalPlayer.Character)
+Spin.MaxTorque = Vector3.new(0, math.huge, 0)
+Spin.AngularVelocity = Vector3.new(0, spinSpeed, 0)
+
+-- Messages during spinning
+ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Hold onto your hats, folks! The mouth finder is revving up its engines... 🚀", "All")
+wait(2)
+ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Scanning the cosmos for the chosen one... 🔎", "All")
+wait(3)
+ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Eureka! Target locked and loaded! 🎯", "All")
+
+wait(1.5)
+stopSpin()
+
+
+-- Get the player in front
+local playerInFront = getPlayerInFront()
+if playerInFront then
+    -- Start staring at the player in front
+    startStare(playerInFront)
+    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("🎯New Target: " .. playerInFront.Name, "All")
+
+    -- Bang Script using the target from the stare part
+
+    local function r15(player)
+        return player.Character and player.Character:FindFirstChildOfClass("Humanoid") and player.Character:FindFirstChildOfClass("Humanoid").RigType == Enum.HumanoidRigType.R15
+    end
+
+    local function getPlr(username)
+        for _, player in pairs(Players:GetPlayers()) do
+            if player.Name == username then
+                return player
+            end
+        end
+    end
+
+    local Username = playerInFront.Name
+
+    local players = getPlr(Username)
+    if not players then
+        ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("❌ Error: The player has left the game.", "All")
+        return -- Stop the script
+    end
+
+    local playerLeftConnection
+    playerLeftConnection = Players.PlayerRemoving:Connect(function(player)
+        if player == players then
+            ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("❌ Error: The player has left the game.", "All")
+            playerLeftConnection:Disconnect()
+            return -- Stop the script
+        end
+    end)
+
+    local bangAnim = Instance.new("Animation")
+    if not r15(game.Players.LocalPlayer) then
+        bangAnim.AnimationId = "rbxassetid://148840371"
+    else
+        bangAnim.AnimationId = "rbxassetid://5918726674"
+    end
+    local bang = game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid'):LoadAnimation(bangAnim)
+    bang:Play(.1, 1, 1)
+
+    local bangplr = players.Name
+    local bangDied = game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').Died:Connect(function()
+        bangLoop = bangLoop:Disconnect()
+        bang:Stop()
+        bangAnim:Destroy()
+        bangDied:Disconnect()
+        playerLeftConnection:Disconnect()
+        end)
+    local bangOffset = CFrame.new(0, 1, -1.1)
+    local bangLoop = RunService.Stepped:Connect(function()
+        pcall(function()
+            local otherRoot = game.Players[bangplr].Character.Head
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = otherRoot.CFrame * bangOffset
+            local charPos = game.Players.LocalPlayer.Character.PrimaryPart.Position
+            local tPos = players.Character:FindFirstChild("HumanoidRootPart").Position
+            local TPos = Vector3.new(tPos.X, charPos.Y, tPos.Z)
+            local newCFrame = CFrame.new(charPos, TPos)
+            game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(newCFrame)
+        end)
+    end)
+
+local HumanoidRP = game.Players.LocalPlayer.Character.HumanoidRootPart
+local BV = Instance.new("BodyVelocity",HumanoidRP)
+local BG = Instance.new("BodyGyro",HumanoidRP)
+
+BV.MaxForce = Vector3.new(math.huge,math.huge,math.huge)
+game:GetService('RunService').RenderStepped:connect(function()
+    BG.MaxTorque = Vector3.new(math.huge,math.huge,math.huge)
+    BG.D = 5000
+    BG.P = 100000
+    BG.CFrame = game.Workspace.CurrentCamera.CFrame
+end)
+
+    -- Messages during bang animation with adjusted speeds and durations
+    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("С￴￴￴￴￴￴￴￴￴￴￴￴￴￴￴￴МО￴N￴D￴А￴R￴LӀ￴N￴G￴ЅU￴С￴￴￴￴￴￴￴￴￴￴￴￴￴￴￴￴КТ￴Н￴А￴Т￴С￴￴￴￴￴￴￴￴￴￴￴￴￴￴￴￴О￴С￴￴￴￴￴￴￴￴￴￴￴￴￴￴￴￴К!!", "All")
+    bang:AdjustSpeed(7)  -- Adjust speed to 7 after the first message
+    wait(3)  -- Duration for the first message
+
+    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("G￴О￴О￴D￴G￴U￴R￴L..ВЕ￴А￴Н￴О￴Е￴F￴￴￴￴О￴R￴Р￴А￴Р￴Ӏ￴ВЕ￴А￴G￴R￴Е￴А￴Т￴ВӀ￴Т￴С￴￴￴￴￴￴￴￴￴￴￴￴￴￴￴￴Н￴...", "All")
+    bang:AdjustSpeed(10)  -- Adjust speed to 10 after the second message
+    wait(2)  -- Duration for the second message
+
+    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Н￴О￴LYЅН￴Ӏ￴Т￴Ӏ￴МА￴ВО￴U￴Т￴Т￴О￴С￴￴￴￴￴￴￴￴￴￴￴￴￴￴￴￴U￴МММ!!", "All")
+    bang:AdjustSpeed(13)  -- Adjust speed to 13 after the third message
+    wait(3)  -- Duration for the third message
+
+    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Н￴Е￴R￴Е￴С￴￴￴￴￴￴￴￴￴￴￴￴￴￴￴￴О￴МЕ￴ЅТ￴Н￴Е￴Н￴О￴LYС￴￴￴￴￴￴￴￴￴￴￴￴￴￴￴￴О￴С￴￴￴￴￴￴￴￴￴￴￴￴￴￴￴￴К..О￴Н￴МYG￴О￴D￴...", "All")
+    bang:AdjustSpeed(15)  -- Adjust speed to 15 after the fourth message
+    wait(2)  -- Duration for the fourth message
+
+    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("А￴Н￴Н￴YЕ￴Ѕ...", "All")
+    bang:AdjustSpeed(16)  -- Adjust speed to 16 after the fifth message
+    wait(3)  -- Duration for the fifth message
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+
+local function enableSwimmingForPlayer(player)
+    if not swimming and player and player.Character and player.Character:FindFirstChildWhichIsA("Humanoid") then
+        local oldgrav = workspace.Gravity
+        workspace.Gravity = 0
+        local function swimDied()
+            workspace.Gravity = oldgrav
+            swimming = false
+        end
+        local Humanoid = player.Character:FindFirstChildWhichIsA("Humanoid")
+        gravReset = Humanoid.Died:Connect(swimDied)
+        local enums = Enum.HumanoidStateType:GetEnumItems()
+        table.remove(enums, table.find(enums, Enum.HumanoidStateType.None))
+        for i, v in pairs(enums) do
+            Humanoid:SetStateEnabled(v, false)
+        end
+        Humanoid:ChangeState(Enum.HumanoidStateType.Swimming)
+        swimbeat = RunService.Heartbeat:Connect(function()
+            pcall(function()
+                player.Character.HumanoidRootPart.Velocity = ((Humanoid.MoveDirection ~= Vector3.new() or UserInputService:IsKeyDown(Enum.KeyCode.Space)) and player.Character.HumanoidRootPart.Velocity or Vector3.new())
+            end)
+        end)
+        swimming = true
+    end
+end
+
+-- Replace 'LocalPlayer' with the appropriate way to get the player who executed the script
+local player = Players.LocalPlayer
+enableSwimmingForPlayer(player)
+
+    -- Set the animation speed to 0 after some time
+    bang:AdjustSpeed(0)
+    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("*/С￴￴￴￴￴￴￴￴￴￴￴￴￴￴￴￴U￴МЅА￴LО￴Т￴*", "All")
+
+    -- Stop the bang animation after a waiting time of 1 second
+    wait(4)
+        local HumanoidRP = game.Players.LocalPlayer.Character.HumanoidRootPart
+if HumanoidRP:FindFirstChildOfClass("BodyVelocity") then
+    HumanoidRP:FindFirstChildOfClass("BodyVelocity"):Destroy()
+end
+if HumanoidRP:FindFirstChildOfClass("BodyGyro") then
+    HumanoidRP:FindFirstChildOfClass("BodyGyro"):Destroy()
+end
+
+    bangLoop:Disconnect()
+    bang:Stop()
+    bangAnim:Destroy()
+    bangDied:Disconnect()
+    playerLeftConnection:Disconnect()
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local function disableSwimmingForPlayer(player)
+    if swimming and player and player.Character and player.Character:FindFirstChildWhichIsA("Humanoid") then
+        local Humanoid = player.Character:FindFirstChildWhichIsA("Humanoid")
+        
+        -- Restore gravity
+        workspace.Gravity = oldgrav
+        
+        -- Re-enable all humanoid states
+        local enums = Enum.HumanoidStateType:GetEnumItems()
+        for i, v in pairs(enums) do
+            Humanoid:SetStateEnabled(v, true)
+        end
+        
+        -- Disconnect the Died event connection
+        if gravReset then
+            gravReset:Disconnect()
+            gravReset = nil
+        end
+        
+        -- Disconnect the Heartbeat event connection
+        if swimbeat then
+            swimbeat:Disconnect()
+            swimbeat = nil
+        end
+        
+        swimming = false
+    end
+end
+
+-- Replace 'LocalPlayer' with the appropriate way to get the player who executed the script
+local player = Players.LocalPlayer
+disableSwimmingForPlayer(player)
+
+    -- Reset gravity to normal after the bang animation stops
+    Workspace.Gravity = 196.2
+else
+    -- If no player was found in front, display an error message
+    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("❌ Error: No player detected in front.", "All")
+end
+end
+
+-- Connect the Start button click event to the function
+startButton.MouseButton1Click:Connect(onStartButtonClick)
