@@ -15,4 +15,7 @@ ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
 function newText(newTextValue)
     TextLabel.Text = newTextValue
+    TextLabel.Visible = true
+    wait(5)
+    TextLabel.Visible = false
 end
