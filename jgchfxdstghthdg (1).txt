@@ -217,23 +217,23 @@ game:GetService('RunService').RenderStepped:connect(function()
 end)
 
     -- Messages during bang animation with adjusted speeds and durations
-    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("CM￴O￴NDARL￴I￴NG￴SU￴C￴K￴T￴HAT￴C￴￴￴￴￴￴OCK￴￴￴￴!!!", "All")
+    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("C￸O￸M￸E￸O￸N￸D￸A￸R￸L￸I￸N￸G￸,￸S￸U￸C￸K￸T￸H￸A￸T￸D￸￸￸І￸￸￸￸С￸￸￸￸Κ￸￸W￸E￸L￸L￸!￸", "All")
     bang:AdjustSpeed(7)  -- Adjust speed to 7 after the first message
     wait(3)  -- Duration for the first message
 
-    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("GOOD￴GURL￴..BE￴A￴S￴LAV￴EF￴OR￴PAP￴I￴B￴EA￴GRE￴AT￴W￴￴￴￴￴￴￴￴HORE!", "All")
+    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("G￸O￸O￸D￸G￸￸I￸￸￸R￸￸￸L￸￸￸.￸￸￸￸.￸￸￸￸B￸E￸A￸H￸O￸E￸F￸O￸R￸P￸A￸P￸I￸,￷￷B￸E￸A￸G￸R￸E￸A￸T￸B￸￸￸I￸￸￸T￸￸￸￸С￸￸H￸￸￸! HEHE", "All")
     bang:AdjustSpeed(10)  -- Adjust speed to 10 after the second message
     wait(2)  -- Duration for the second message
 
-    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("HO￴L￴YSHI￴￴￴￴￴TI'MA￴B￴OUTTOCU￴￴￴￴M!!!", "All")
+    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("H￸O￸L￸Y￸S￸￸Н￸￸￸Ӏ￸￸￸T￸￸I￸M￸A￸B￸O￸U￸T￸T￸A￸C￸￸￸￸U￸￸￸￸М￸￸!￸￸￸￸!￸￸", "All")
     bang:AdjustSpeed(13)  -- Adjust speed to 13 after the third message
     wait(3)  -- Duration for the third message
 
-    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("H￴ER￴ECOM￴EST￴HE￴ALMIG￴HTYC￴￴￴￴￴￴￴UM...", "All")
+    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("SWALLOW￷￷IT￷￷WELL!", "All")
     bang:AdjustSpeed(15)  -- Adjust speed to 15 after the fourth message
     wait(2)  -- Duration for the fourth message
 
-    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("AH￴HSH￴￴￴￴￴￴￴IT.￴￴￴￴￴.￴￴￴￴￴￴￴DO￴N'T￴CLOS￴E￴Y￴OU￴RMO￴UTH!￴", "All")
+    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("AHH￷￷YES..", "All")
     bang:AdjustSpeed(16)  -- Adjust speed to 16 after the fifth message
     wait(3)  -- Duration for the fifth message
 
@@ -272,7 +272,7 @@ enableSwimmingForPlayer(player)
 
     -- Set the animation speed to 0 after some time
     bang:AdjustSpeed(0)
-    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("*/CU￴￴￴￴￴￴￴MSALO￴T", "All")
+    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("*￸￸￸￸C￸￸￸U￸￸￸￸M￸￸Ѕ￸￸￸A￸L￸O￸T￸*￸", "All")
 
     -- Stop the bang animation after a waiting time of 1 second
     wait(4)
