@@ -138,7 +138,7 @@ Spin.AngularVelocity = Vector3.new(0, spinSpeed, 0)
 -- Messages during spinning
 sendMessage("Hold onto your hats, folks! The toy finder is revving up its engines...")
 wait(2)
-ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Scanning the cosmos for the chosen one... 🔎", "All")
+sendMessage("Scanning the cosmos for the chosen one...")
 wait(3)
 sendMessage("Eureka! Target locked and loaded! 🎯")
 
