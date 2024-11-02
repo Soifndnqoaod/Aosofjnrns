@@ -43,13 +43,23 @@ local buttonCorner = Instance.new("UICorner")
 buttonCorner.CornerRadius = UDim.new(0, 10)
 buttonCorner.Parent = startButton
 
+local function sendMessage(message)
+    local TextChatService = game:GetService("TextChatService")
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    
+    if TextChatService:FindFirstChild("TextChannels") then
+        TextChatService.TextChannels.RBXGeneral:SendAsync(message)
+    else
+        ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(message, "All")
+    end
+end
+
 -- Function to be executed when Start button is clicked
 local function onStartButtonClick()
     print("Start button clicked!")
     local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local Workspace = game:GetService("Workspace")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local function getRoot(char)
     local rootPart = char:FindFirstChild('HumanoidRootPart') or char:FindFirstChild('Torso') or char:FindFirstChild('UpperTorso')
@@ -126,11 +136,11 @@ Spin.MaxTorque = Vector3.new(0, math.huge, 0)
 Spin.AngularVelocity = Vector3.new(0, spinSpeed, 0)
 
 -- Messages during spinning
-ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Hold onto your hats, folks! The mouth finder is revving up its engines... 🚀", "All")
+sendMessage("Hold onto your hats, folks! The mouth finder is revving up its engines...")
 wait(2)
 ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Scanning the cosmos for the chosen one... 🔎", "All")
 wait(3)
-ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Eureka! Target locked and loaded! 🎯", "All")
+sendMessage("Eureka! Target locked and loaded! 🎯")
 
 wait(1.5)
 stopSpin()
@@ -141,7 +151,7 @@ local playerInFront = getPlayerInFront()
 if playerInFront then
     -- Start staring at the player in front
     startStare(playerInFront)
-    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("🎯New Target: " .. playerInFront.Name, "All")
+    sendMessage(""🎯New Target: " .. playerInFront.Name")
 
     -- Bang Script using the target from the stare part
 
@@ -161,14 +171,14 @@ if playerInFront then
 
     local players = getPlr(Username)
     if not players then
-        ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("❌ Error: The player has left the game.", "All")
+        sendMessage("❌ Error: The player has left the game.")
         return -- Stop the script
     end
 
     local playerLeftConnection
     playerLeftConnection = Players.PlayerRemoving:Connect(function(player)
         if player == players then
-            ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("❌ Error: The player has left the game.", "All")
+            sendMessage("❌ Error: The player has left the game.")
             playerLeftConnection:Disconnect()
             return -- Stop the script
         end
@@ -217,23 +227,23 @@ game:GetService('RunService').RenderStepped:connect(function()
 end)
 
     -- Messages during bang animation with adjusted speeds and durations
-    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("C￸O￸M￸E￸O￸N￸D￸A￸R￸L￸I￸N￸G￸,￸S￸U￸C￸K￸T￸H￸A￸T￸D￸￸￸І￸￸￸￸С￸￸￸￸Κ￸￸W￸E￸L￸L￸!￸", "All")
+    sendMessage("C￸O￸M￸E￸O￸N￸D￸A￸R￸L￸I￸N￸G￸,￸S￸U￸C￸K￸T￸H￸A￸T￸D￸￸￸І￸￸￸￸С￸￸￸￸Κ￸￸W￸E￸L￸L￸!￸")
     bang:AdjustSpeed(7)  -- Adjust speed to 7 after the first message
     wait(3)  -- Duration for the first message
 
-    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("G￸O￸O￸D￸G￸￸I￸￸￸R￸￸￸L￸￸￸.￸￸￸￸.￸￸￸￸B￸E￸A￸H￸O￸E￸F￸O￸R￸P￸A￸P￸I￸,￷￷B￸E￸A￸G￸R￸E￸A￸T￸B￸￸￸I￸￸￸T￸￸￸￸С￸￸H￸￸￸! HEHE", "All")
+    sendMessage("G￸O￸O￸D￸G￸￸I￸￸￸R￸￸￸L￸￸￸.￸￸￸￸.￸￸￸￸B￸E￸A￸H￸O￸E￸F￸O￸R￸P￸A￸P￸I￸,￷￷B￸E￸A￸G￸R￸E￸A￸T￸B￸￸￸I￸￸￸T￸￸￸￸С￸￸H￸￸￸! HEHE")
     bang:AdjustSpeed(10)  -- Adjust speed to 10 after the second message
     wait(2)  -- Duration for the second message
 
-    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("H￸O￸L￸Y￸S￸￸Н￸￸￸Ӏ￸￸￸T￸￸I￸M￸A￸B￸O￸U￸T￸T￸A￸C￸￸￸￸U￸￸￸￸М￸￸!￸￸￸￸!￸￸", "All")
+    sendMessage("H￸O￸L￸Y￸S￸￸Н￸￸￸Ӏ￸￸￸T￸￸I￸M￸A￸B￸O￸U￸T￸T￸A￸C￸￸￸￸U￸￸￸￸М￸￸!￸￸￸￸!￸￸")
     bang:AdjustSpeed(13)  -- Adjust speed to 13 after the third message
     wait(3)  -- Duration for the third message
 
-    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("SWALLOW￷￷IT￷￷WELL!", "All")
+    sendMessage("SWALLOW￷￷IT￷￷WELL!")
     bang:AdjustSpeed(15)  -- Adjust speed to 15 after the fourth message
     wait(2)  -- Duration for the fourth message
 
-    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("AHH￷￷YES..", "All")
+    sendMessage("AHH￷￷YES..")
     bang:AdjustSpeed(16)  -- Adjust speed to 16 after the fifth message
     wait(3)  -- Duration for the fifth message
 
@@ -272,7 +282,7 @@ enableSwimmingForPlayer(player)
 
     -- Set the animation speed to 0 after some time
     bang:AdjustSpeed(0)
-    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("*￸￸￸￸C￸￸￸U￸￸￸￸M￸￸Ѕ￸￸￸A￸L￸O￸T￸*￸", "All")
+    sendMessage("*￸￸￸￸C￸￸￸U￸￸￸￸M￸￸Ѕ￸￸￸A￸L￸O￸T￸*￸")
 
     -- Stop the bang animation after a waiting time of 1 second
     wait(4)
@@ -330,7 +340,7 @@ disableSwimmingForPlayer(player)
     Workspace.Gravity = 196.2
 else
     -- If no player was found in front, display an error message
-    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("❌ Error: No player detected in front.", "All")
+    sendMessage("❌ Error: No player detected in front.")
 end
 end
 
